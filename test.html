@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contentful Name Generator</title>
+
+<style>
+@font-face {
+font-family: 'ASDAText-Regular';
+src: url('/fonts/ASDAText-Regular.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'ASDADisplay-Headline';
+    src: url('/fonts/ASDADisplay-Headline.otf') format('opentype');
+}
+
+body {
+    max-width: 1000px;
+    margin: 40px auto;
+    background: #002E3D;
+    font-family: ASDAText-Regular;
+}
+
+h1,
+h2 {
+    margin-bottom: 20px;
+    font-family: ASDADisplay-Headline;
+    color: #fff;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+label {
+    display: block;
+    margin-bottom: 4px;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+textarea {
+    resize: none;
+}
+
+button {
+    padding: 10px 16px;
+    cursor: pointer;
+    font-family: ASDAText-Regular;
+}
+
+input,select, textarea {
+    font-family: ASDAText-Regular;
+    border: none;
+    border-radius: 6px;
+}
+
+.error {
+    color: #d32f2f;
+    margin-top: 12px;
+    font-weight: bold;
+}
+
+.success {
+    color: green;
+    margin-top: 12px;
+    font-weight: bold;
+}
+
+.history-date {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.history-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.history-row input {
+    flex: 1;
+}
+
+.actions {
+    margin-top: 10px;
+}
+
+.history-item {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.history-date {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.history-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.history-row input {
+    flex: 1;
+}
+
+.delete-btn {
+    background: #E0004D;
+    color: white;
+    border: none;
+    border-radius: 6px;
+}
+
+.delete-all-btn {
+    background: none;
+    border: 3px solid #002E3B;
+    color: #E0004D;
+    font-weight: bold;
+    text-decoration: underline;
+    border-radius: 6px;
+    margin-top: 15px;
+}
+
+.generate-btn, .copy-btn, .copy-btn-history {
+    background: #002E3B;
+    color: white;
+    border: none;
+    border-radius: 6px;
+}
+
+.delete-btn:hover {
+    background: #b71c1c;
+}
+.scalloped-border {
+    position: relative;
+    background: #CCE8DC;
+    padding: 40px;
+    display: block;
+    width: 90%;
+    margin: 10px auto 80px;
+}
+
+.corner {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #002E3D;
+}
+
+.corner-tl {
+    top: -10px;
+    left: -10px;
+}
+
+.corner-tr {
+    top: -10px;
+    right: -10px;
+}
+
+.corner-bl {
+    bottom: -10px;
+    left: -10px;
+}
+
+.corner-br {
+    bottom: -10px;
+    right: -10px;
+}
+
+.page-title-header {
+    display: block;
+    margin: 0 auto;
+    position: relative;
+    left: 90px;
+    transform: rotate(4deg);
+    animation: pop-in-bounce-title 0.5s ease-out;
+}
+
+.generate-title {
+    position: absolute;
+    z-index: 1;
+    transform: rotate(-4deg);
+    top: -36px;
+    left: 30px;
+    animation: pop-in-bounce-generate 0.5s ease-out;
+    animation-delay: .140s;
+}
+
+.history-title {
+    position: absolute;
+    z-index: 1;
+    transform: rotate(4deg);
+    top: -40px;
+    left: 40px;
+    animation: pop-in-bounce-history 0.5s ease-out;
+    animation-delay: .300s;
+}
+
+.page-header {
+    margin-bottom: 40px;
+}
+
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    padding-right: 40px;
+}
+
+.select-wrapper {
+    position: relative;
+}
+
+.select-wrapper::after {
+    content: "";
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    width: 6px;
+    height: 6px;
+    border-right: 3px solid #000;
+    border-bottom: 3px solid #000;
+    transform: translateY(-70%) rotate(45deg);
+    pointer-events: none;
+}
+
+@keyframes pop-in-bounce-title {
+  0%   { opacity: 0; transform: rotate(4deg) scale(0.1); }
+  60%  { opacity: 1; transform: rotate(4deg) scale(1.1); }
+  100% { transform: rotate(4deg) scale(1); }
+}
+
+@keyframes pop-in-bounce-generate {
+  0%   { opacity: 0; transform: rotate(-4deg) scale(0.1); }
+  60%  { opacity: 1; transform: rotate(-4deg) scale(1.1); }
+  100% { transform: rotate(-4deg) scale(1); }
+}
+
+@keyframes pop-in-bounce-history {
+  0%   { opacity: 0; transform: rotate(4deg) scale(0.1); }
+  60%  { opacity: 1; transform: rotate(4deg) scale(1.1); }
+  100% { transform: rotate(4deg) scale(1); }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="page-header">
+    <svg class="page-title-header" width="500" height="200" viewBox="0 0 151 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 0V45H132.377V21.7802L151 0H0Z" fill="#F7B7D3"/>
+        <path d="M16.1439 23.9704C12.6519 23.9704 10.5279 21.4864 10.5279 17.4004C10.5279 13.2604 12.7239 10.7944 16.4139 10.7944C19.0779 10.7944 20.8959 12.2884 21.5619 15.0424L18.0339 15.9244C17.8179 14.5384 17.2419 13.7824 16.3959 13.7824C14.9919 13.7824 14.2359 15.0424 14.2359 17.3824C14.2359 19.7584 14.9019 20.9824 16.1799 20.9824C17.1879 20.9824 17.6739 20.3884 18.1059 18.6244L21.3099 19.8484C20.6079 22.5844 18.8619 23.9704 16.1439 23.9704ZM28.1235 23.9704C24.2715 23.9704 22.1295 21.3784 22.1295 17.3824C22.1295 13.3864 24.2715 10.7944 28.1235 10.7944C31.9755 10.7944 34.1175 13.3864 34.1175 17.3824C34.1175 21.3784 31.9755 23.9704 28.1235 23.9704ZM25.8375 17.3824C25.8375 19.7764 26.7015 20.9824 28.1235 20.9824C29.5455 20.9824 30.4095 19.7764 30.4095 17.3824C30.4095 14.9884 29.5455 13.7824 28.1235 13.7824C26.7015 13.7824 25.8375 14.9884 25.8375 17.3824ZM42.7208 23.6824L38.9408 17.3464V23.6824H35.3408V11.0824H38.7608L42.5408 17.4184V11.0824H46.1408V23.6824H42.7208ZM50.1257 23.6824V13.9624H47.2457V11.0824H56.5877V13.9624H53.7257V23.6824H50.1257ZM62.2677 23.9704C58.8477 23.9704 56.7057 21.3604 56.7057 17.2204C56.7057 13.2964 59.0097 10.7944 62.6097 10.7944C65.9757 10.7944 67.9737 12.9544 67.9737 16.5904C67.9737 17.0224 67.9377 17.5084 67.8657 18.1384H60.4497C60.5937 20.0464 61.2597 20.9824 62.4117 20.9824C63.2397 20.9824 63.9237 20.3164 64.1757 19.2184L67.3797 20.3884C66.6237 22.6024 64.8057 23.9704 62.2677 23.9704ZM60.5037 16.0144H64.3737C64.3737 14.5384 63.7257 13.6744 62.6277 13.6744C61.4757 13.6744 60.7377 14.5024 60.5037 16.0144ZM76.5763 23.6824L72.7963 17.3464V23.6824H69.1963V11.0824H72.6163L76.3963 17.4184V11.0824H79.9963V23.6824H76.5763ZM83.9811 23.6824V13.9624H81.1011V11.0824H90.4431V13.9624H87.5811V23.6824H83.9811ZM91.5381 23.6824V11.0824H99.8181V13.9624H95.1381V16.1944H99.4581V18.9664H95.1381V23.6824H91.5381ZM104.647 23.9704C102.451 23.9704 101.101 22.2784 101.101 19.8304V11.0824H104.701V19.0204C104.701 19.8484 105.169 20.4064 105.781 20.4064C107.005 20.4064 107.869 19.3984 107.869 17.9224V11.0824H111.469V23.6824H107.869V21.7384C107.221 23.1784 106.069 23.9704 104.647 23.9704ZM113.124 23.6824V11.0824H116.724V20.8024H120.774V23.6824H113.124ZM16.2098 34.6824L13.6058 30.3176V34.6824H11.1258V26.0024H13.4818L16.0858 30.3672V26.0024H18.5658V34.6824H16.2098ZM21.8441 34.8808C20.4305 34.8808 19.4137 33.8888 19.4137 32.5248C19.4137 30.6028 20.9141 29.648 24.0761 29.5488C24.2497 28.5816 23.8281 27.788 23.1337 27.788C22.4517 27.788 22.0177 28.2716 21.8937 29.152L19.4881 28.656C19.8353 26.8084 21.1497 25.804 23.2453 25.804C25.3657 25.804 26.5561 27.0316 26.5561 29.2264V34.6576H24.0761V33.6284C23.5801 34.4592 22.8361 34.8808 21.8441 34.8808ZM21.9681 32.1404C21.9681 32.5744 22.3029 32.872 22.7865 32.872C23.5925 32.872 24.0637 32.2396 24.0637 31.1484V30.9748C22.6997 30.9748 21.9681 31.4212 21.9681 32.1404ZM27.3938 34.6824L28.0138 26.0024H30.8162L32.6142 31.9668L34.1642 26.0024H36.9666L37.8346 34.6824H35.4042L35.0322 29.7968L33.8542 34.6824H31.3742L30.0722 29.8092L29.8242 34.6824H27.3938ZM42.027 34.8808C39.671 34.8808 38.1954 33.0828 38.1954 30.2308C38.1954 27.5276 39.7826 25.804 42.2626 25.804C44.5814 25.804 45.9578 27.292 45.9578 29.7968C45.9578 30.0944 45.933 30.4292 45.8834 30.8632H40.7746C40.8738 32.1776 41.3326 32.8224 42.1262 32.8224C42.6966 32.8224 43.1678 32.3636 43.3414 31.6072L45.5486 32.4132C45.0278 33.9384 43.7754 34.8808 42.027 34.8808ZM40.8118 29.4H43.4778C43.4778 28.3832 43.0314 27.788 42.275 27.788C41.4814 27.788 40.973 28.3584 40.8118 29.4ZM52.928 34.8808C50.4852 34.8808 48.9848 33.12 48.9848 30.3548C48.9848 27.5028 50.4852 25.804 52.99 25.804C54.912 25.804 56.1892 26.8084 56.648 28.7304L54.2176 29.214C54.0688 28.3336 53.6968 27.8624 53.0892 27.8624C52.0848 27.8624 51.5392 28.6808 51.5392 30.3548C51.5392 31.942 52.0972 32.8224 52.99 32.8224C53.7216 32.8224 54.1804 32.4628 54.3168 31.8428H52.9776V30.2556H56.6108V31.1608C56.6108 33.5416 55.1848 34.8808 52.928 34.8808ZM61.0629 34.8808C58.7069 34.8808 57.2313 33.0828 57.2313 30.2308C57.2313 27.5276 58.8185 25.804 61.2985 25.804C63.6173 25.804 64.9937 27.292 64.9937 29.7968C64.9937 30.0944 64.9689 30.4292 64.9193 30.8632H59.8105C59.9097 32.1776 60.3685 32.8224 61.1621 32.8224C61.7325 32.8224 62.2037 32.3636 62.3773 31.6072L64.5845 32.4132C64.0637 33.9384 62.8113 34.8808 61.0629 34.8808ZM59.8477 29.4H62.5137C62.5137 28.3832 62.0673 27.788 61.3109 27.788C60.5173 27.788 60.0089 28.3584 59.8477 29.4ZM70.9199 34.6824L68.3159 30.3176V34.6824H65.8359V26.0024H68.1919L70.7959 30.3672V26.0024H73.2759V34.6824H70.9199ZM77.9555 34.8808C75.5995 34.8808 74.1239 33.0828 74.1239 30.2308C74.1239 27.5276 75.7111 25.804 78.1911 25.804C80.5099 25.804 81.8863 27.292 81.8863 29.7968C81.8863 30.0944 81.8615 30.4292 81.8119 30.8632H76.7031C76.8023 32.1776 77.2611 32.8224 78.0547 32.8224C78.6251 32.8224 79.0963 32.3636 79.2699 31.6072L81.4771 32.4132C80.9563 33.9384 79.7039 34.8808 77.9555 34.8808ZM76.7403 29.4H79.4063C79.4063 28.3832 78.9599 27.788 78.2035 27.788C77.4099 27.788 76.9015 28.3584 76.7403 29.4ZM82.7285 26.3C83.8569 25.9528 84.8985 25.804 85.9773 25.804C88.2217 25.804 89.6353 26.9572 89.6353 28.8048C89.6353 29.834 89.2137 30.64 88.4821 31.1484C89.2509 32.0784 89.7965 33.3184 90.0197 34.6824H87.4653C87.2545 33.6656 86.8453 32.5372 86.2873 31.7312H85.2085V34.6824H82.7285V26.3ZM85.2085 29.8712H85.9649C86.6345 29.8712 87.0809 29.4372 87.0809 28.8048C87.0809 28.0856 86.7337 27.788 86.0393 27.788C85.7665 27.788 85.4689 27.8252 85.2085 27.9368V29.8712ZM92.7203 34.8808C91.3067 34.8808 90.2899 33.8888 90.2899 32.5248C90.2899 30.6028 91.7903 29.648 94.9523 29.5488C95.1259 28.5816 94.7043 27.788 94.0099 27.788C93.3279 27.788 92.8939 28.2716 92.7699 29.152L90.3643 28.656C90.7115 26.8084 92.0259 25.804 94.1215 25.804C96.2419 25.804 97.4323 27.0316 97.4323 29.2264V34.6576H94.9523V33.6284C94.4563 34.4592 93.7123 34.8808 92.7203 34.8808ZM92.8443 32.1404C92.8443 32.5744 93.1791 32.872 93.6627 32.872C94.4687 32.872 94.9399 32.2396 94.9399 31.1484V30.9748C93.5759 30.9748 92.8443 31.4212 92.8443 32.1404ZM99.6707 34.6824V27.9864H97.6867V26.0024H104.122V27.9864H102.151V34.6824H99.6707ZM108.333 34.8808C105.679 34.8808 104.204 33.0952 104.204 30.3424C104.204 27.5896 105.679 25.804 108.333 25.804C110.986 25.804 112.462 27.5896 112.462 30.3424C112.462 33.0952 110.986 34.8808 108.333 34.8808ZM106.758 30.3424C106.758 31.9916 107.353 32.8224 108.333 32.8224C109.312 32.8224 109.908 31.9916 109.908 30.3424C109.908 28.6932 109.312 27.8624 108.333 27.8624C107.353 27.8624 106.758 28.6932 106.758 30.3424ZM113.305 26.3C114.433 25.9528 115.475 25.804 116.553 25.804C118.798 25.804 120.211 26.9572 120.211 28.8048C120.211 29.834 119.79 30.64 119.058 31.1484C119.827 32.0784 120.373 33.3184 120.596 34.6824H118.041C117.831 33.6656 117.421 32.5372 116.863 31.7312H115.785V34.6824H113.305V26.3ZM115.785 29.8712H116.541C117.211 29.8712 117.657 29.4372 117.657 28.8048C117.657 28.0856 117.31 27.788 116.615 27.788C116.343 27.788 116.045 27.8252 115.785 27.9368V29.8712Z" fill="#002E3B"/>
+    </svg>
+</div>
+
+
+<div class="scalloped-border">
+
+    <svg class="generate-title" width="257" height="65" viewBox="0 0 127 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 15L7.5 0H8L8 30H7.5L0 15Z" fill="#F3795C"/>
+        <rect width="111" height="30" transform="translate(8)" fill="#F3795C"/>
+        <path d="M22.4018 21.796C18.7573 21.796 16.5188 19.169 16.5188 15.0435C16.5188 10.7885 18.7573 8.254 22.4943 8.254C25.3618 8.254 27.2673 9.7525 27.9518 12.62L24.3258 13.3415C24.1038 12.028 23.5488 11.325 22.6423 11.325C21.1438 11.325 20.3298 12.546 20.3298 15.0435C20.3298 17.4115 21.1623 18.725 22.4943 18.725C23.5858 18.725 24.2703 18.1885 24.4738 17.2635H22.4758V14.8955H27.8963V16.246C27.8963 19.798 25.7688 21.796 22.4018 21.796ZM34.5385 21.796C31.0235 21.796 28.822 19.1135 28.822 14.8585C28.822 10.8255 31.19 8.254 34.89 8.254C38.3495 8.254 40.403 10.474 40.403 14.211C40.403 14.655 40.366 15.1545 40.292 15.802H32.67C32.818 17.763 33.5025 18.725 34.6865 18.725C35.5375 18.725 36.2405 18.0405 36.4995 16.912L39.7925 18.1145C39.0155 20.39 37.147 21.796 34.5385 21.796ZM32.7255 13.619H36.703C36.703 12.102 36.037 11.214 34.9085 11.214C33.7245 11.214 32.966 12.065 32.7255 13.619ZM49.2446 21.5L45.3596 14.988V21.5H41.6596V8.55H45.1746L49.0596 15.062V8.55H52.7596V21.5H49.2446ZM59.7412 21.796C56.2262 21.796 54.0247 19.1135 54.0247 14.8585C54.0247 10.8255 56.3927 8.254 60.0927 8.254C63.5522 8.254 65.6057 10.474 65.6057 14.211C65.6057 14.655 65.5687 15.1545 65.4947 15.802H57.8727C58.0207 17.763 58.7052 18.725 59.8892 18.725C60.7402 18.725 61.4432 18.0405 61.7022 16.912L64.9952 18.1145C64.2182 20.39 62.3497 21.796 59.7412 21.796ZM57.9282 13.619H61.9057C61.9057 12.102 61.2397 11.214 60.1112 11.214C58.9272 11.214 58.1687 12.065 57.9282 13.619ZM66.8622 8.994C68.5457 8.476 70.0997 8.254 71.7092 8.254C75.0577 8.254 77.1667 9.9745 77.1667 12.731C77.1667 14.2665 76.5377 15.469 75.4462 16.2275C76.5932 17.615 77.4072 19.465 77.7402 21.5H73.9292C73.6147 19.983 73.0042 18.2995 72.1717 17.097H70.5622V21.5H66.8622V8.994ZM70.5622 14.322H71.6907C72.6897 14.322 73.3557 13.6745 73.3557 12.731C73.3557 11.658 72.8377 11.214 71.8017 11.214C71.3947 11.214 70.9507 11.2695 70.5622 11.436V14.322ZM81.7693 21.796C79.6603 21.796 78.1433 20.316 78.1433 18.281C78.1433 15.4135 80.3818 13.989 85.0993 13.841C85.3583 12.398 84.7293 11.214 83.6933 11.214C82.6758 11.214 82.0283 11.9355 81.8433 13.249L78.2543 12.509C78.7723 9.7525 80.7333 8.254 83.8598 8.254C87.0233 8.254 88.7993 10.0855 88.7993 13.36V21.463H85.0993V19.9275C84.3593 21.167 83.2493 21.796 81.7693 21.796ZM81.9543 17.7075C81.9543 18.355 82.4538 18.799 83.1753 18.799C84.3778 18.799 85.0808 17.8555 85.0808 16.2275V15.9685C83.0458 15.9685 81.9543 16.6345 81.9543 17.7075ZM92.1389 21.5V11.51H89.1789V8.55H98.7804V11.51H95.8389V21.5H92.1389ZM104.618 21.796C101.103 21.796 98.9016 19.1135 98.9016 14.8585C98.9016 10.8255 101.27 8.254 104.97 8.254C108.429 8.254 110.483 10.474 110.483 14.211C110.483 14.655 110.446 15.1545 110.372 15.802H102.75C102.898 17.763 103.582 18.725 104.766 18.725C105.617 18.725 106.32 18.0405 106.579 16.912L109.872 18.1145C109.095 20.39 107.227 21.796 104.618 21.796ZM102.805 13.619H106.783C106.783 12.102 106.117 11.214 104.988 11.214C103.804 11.214 103.046 12.065 102.805 13.619Z" fill="#002E3B"/>
+        <path d="M127 15L119.5 30H119V0H119.5L127 15Z" fill="#F3795C"/>
+    </svg>
+
+    <div class="form-group">
+        <label>Live Date</label>
+        <input type="date" id="liveDate">
+    </div>
+
+    <div class="form-group">
+        <label>Team Name</label>
+        <div class="select-wrapper">
+            <select id="team">
+                <option value="">Select Team</option>
+                <option value="Campaigns">Campaigns</option>
+                <option value="Events">Events</option>
+                <option value="Merch">Merch</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Component Type</label>
+
+        <input
+            list="componentList"
+            id="componentType"
+            placeholder="Search component type..."
+        >
+
+        <datalist id="componentList">
+            <option value="Ad Banner : Cart : Horizontal">
+            <option value="Ad Banner : Category : Horizontal">
+            <option value="Ad Banner : Favorites : Horizontal">
+            <option value="Ad Banner : Logged-in Home : Horizontal Hero">
+            <option value="Ad Banner : Logged-out Home : Horizontal Hero">
+            <option value="Ad Banner : Order Confirmation : Horizontal">
+            <option value="Ad Banner : Product Details : Horizontal">
+            <option value="Ad Banner : Promotion Details : Horizontal">
+            <option value="Ad Banner : Promotions : Horizontal">
+            <option value="Ad Banner : Search Results : Horizontal">
+            <option value="Ad Banner : Slot booking : Horizontal">
+            <option value="Ad Banner : Category : Double Tile">
+            <option value="Ad Banner : Logged-in Home : Double Tile">
+            <option value="Ad Banner : Favorites : Double Tile">
+            <option value="Ad Banner : Logged-out Home : Double Tile">
+            <option value="Ad Banner : Promotions : Double Tile">
+            <option value="Ad Banner : Search Results : Double Tile">
+            <option value="Ad Banner : Logged-in Homepage : Product Card">
+            <option value="Ad Banner : Logged-out Homepage : Product Card">
+            <option value="Ad Banner : Category Page : Product Card">
+            <option value="Ad Banner : Search Results : Product Card">
+            <option value="Logged In Homepage : Componentized">
+            <option value="Logged Out Homepage : Componentized">
+            <option value="Component : Carousel : Container">
+            <option value="Component : Product Feed">
+            <option value="Popup">
+            <option value="Tabs : Menu">
+            <option value="Tabs : Single Tab">
+            <option value="Footer">
+            <option value="Footer Links Column">
+            <option value="Footer Page Link">
+            <option value="Footer Social Link">
+            <option value="Content Block : Header">
+            <option value="Content Block : In page">
+            <option value="Navigation : Mobile links">
+            <option value="Category : SEO Content Field">
+            <option value="Shoppable Banner: Category Page">
+            <option value="Shoppable Banner: Search Page">
+            <option value="Featured Products : Category Page">
+            <option value="Featured Products : Logged-in Homepage">
+            <option value="Featured Products : Logged-out Homepage">
+            <option value="Featured Products : Product Details">
+            <option value="Featured Products : Promotions Page">
+            <option value="Featured Products : Search Results">
+            <option value="Menu Campaign">
+            <option value="Menu Campaign Group">
+            <option value="Menu Campaign Item">
+            <option value="Checkout Walk : Configuration">
+            <option value="Checkout Walk : Customer Target : All">
+            <option value="Checkout Walk : Customer Target : IDs">
+            <option value="Checkout Walk : Customer Target : Percentage">
+            <option value="Checkout Walk : Free gifts page">
+            <option value="Checkout Walk : Page">
+            <option value="Checkout Walk : Product list">
+            <option value="Checkout Walk : Section">
+            <option value="Delivery Pass : Horizontal hero">
+            <option value="Delivery Pass : Subscriptions page">
+            <option value="Composable : Navbar">
+            <option value="Composable : Navbar : Item Custom">
+            <option value="Composable : Navbar : Item Default">
+            <option value="Shop In Shop : Componentized">
+            <option value="Shop In Shop Category : Componentized">
+            <option value="Static Page">
+            <option value="Static Page : Componentized">
+            <option value="Component : Rich Text">
+            <option value="Component : Horizontal Hero">
+            <option value="Component : Grid : Container">
+            <option value="Component : Grid : Lead Image">
+            <option value="Component : Grid : Tile">
+            <option value="Component : Navigation Bar">
+            <option value="Component : Navigation Bar : Item">
+            <option value="Recipes : Category : Product Card">
+            <option value="Recipes : Search Results : Product Card">
+            <option value="Recipes : Store Home Page Card">
+            <option value="Recipes : Store Home Page Container">
+            <option value="Recipes : Recipe Group">
+            <option value="Recipes : Collection Group">
+            <option value="Recipes : Expanded Collection">
+            <option value="Recipes : Author">
+            <option value="Recipes : Collection Details">
+            <option value="Recipes : Home Page">
+            <option value="Recipes : Recipe Details">
+            <option value="Recipes : Saved Recipes">
+            <option value="Recipes : SEO Settings">
+            <option value="Recipes : Structured Data Category">
+            <option value="Recipes : Unit Of Measurement">
+            <option value="Module : In Grid">
+            <option value="Component : Product List">
+            <option value="Component : Tile">
+            <option value="Seasonal Slots : Slot Booking : Above Grid">
+        </datalist>
+    </div>
+
+    <div class="form-group">
+        <label>Name / Event / Campaign</label>
+        <input type="text" id="campaignName" placeholder="Easter">
+    </div>
+
+    <div class="form-group">
+        <label>Week Number</label>
+        <input type="number" id="weekNumber">
+    </div>
+
+    <div class="form-group">
+        <label>Description / Placement / BM Nunber</label>
+        <input type="text" id="bookingId" placeholder="Add extra details here if required">
+    </div>
+
+    <div class="actions">
+        <button class="generate-btn" onclick="generateName()">Generate Name</button>
+    </div>
+
+    <div id="error" class="error"></div>
+    <div id="success" class="success"></div>
+
+    <div class="form-group">
+        <label>Generated Name</label>
+        <textarea id="output" readonly></textarea>
+    </div>
+
+    <button class="copy-btn" onclick="copyToClipboard()">
+        Copy to Clipboard
+    </button>
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+</div>
+
+<div class="scalloped-border">
+
+    <svg class="history-title" width="207" height="65" viewBox="0 0 103 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 2.24214V0H6V30H5V27.7579C5 25.4549 3.98249 23.233 2.38749 21.5894C0.752359 19.9053 0 17.5008 0 15.0558V14.9543C0 12.4992 0.752359 10.1048 2.39752 8.41055C3.98249 6.76699 5 4.54515 5 2.24214Z" fill="#A386BC"/>
+        <rect width="91" height="30" transform="translate(6)" fill="#A386BC"/>
+        <path d="M22.637 21V15.9125H18.789V21H15.089V8.05H18.789V12.7675H22.637V8.05H26.337V21H22.637ZM28.0427 21V8.05H31.7427V21H28.0427ZM38.2545 21.296C35.6645 21.296 33.796 20.0195 32.8525 17.6145L36.1085 16.412C36.46 17.5775 37.274 18.225 38.384 18.225C39.161 18.225 39.642 17.8365 39.642 17.2445C39.642 16.597 39.2165 16.3565 37.1075 15.8385L36.5895 15.709C34.6655 15.228 33.4445 13.7665 33.4445 11.972C33.4445 9.3635 35.3315 7.754 38.3655 7.754C41.1775 7.754 42.898 9.086 43.3975 11.4725L39.901 12.342C39.6605 11.2135 39.1795 10.825 38.4025 10.825C37.6995 10.825 37.2185 11.2135 37.2185 11.787C37.2185 12.3605 37.6625 12.6935 38.6615 12.8785L39.0685 12.9525C42.047 13.489 43.416 14.784 43.416 17.041C43.416 19.6495 41.418 21.296 38.2545 21.296ZM46.7612 21V11.01H43.8012V8.05H53.4027V11.01H50.4612V21H46.7612ZM59.6844 21.296C55.7254 21.296 53.5239 18.632 53.5239 14.525C53.5239 10.418 55.7254 7.754 59.6844 7.754C63.6434 7.754 65.8449 10.418 65.8449 14.525C65.8449 18.632 63.6434 21.296 59.6844 21.296ZM57.3349 14.525C57.3349 16.9855 58.2229 18.225 59.6844 18.225C61.1459 18.225 62.0339 16.9855 62.0339 14.525C62.0339 12.0645 61.1459 10.825 59.6844 10.825C58.2229 10.825 57.3349 12.0645 57.3349 14.525ZM67.1022 8.494C68.7857 7.976 70.3397 7.754 71.9492 7.754C75.2977 7.754 77.4067 9.4745 77.4067 12.231C77.4067 13.7665 76.7777 14.969 75.6862 15.7275C76.8332 17.115 77.6472 18.965 77.9802 21H74.1692C73.8547 19.483 73.2442 17.7995 72.4117 16.597H70.8022V21H67.1022V8.494ZM70.8022 13.822H71.9307C72.9297 13.822 73.5957 13.1745 73.5957 12.231C73.5957 11.158 73.0777 10.714 72.0417 10.714C71.6347 10.714 71.1907 10.7695 70.8022 10.936V13.822ZM79.1132 21C80.0197 19.631 80.7597 18.447 81.3517 17.3925L76.9857 8.05H81.1667L83.3312 13.933C84.1822 11.898 84.4597 10.159 84.6447 8.05H88.6407C87.8822 12.823 85.9952 17.374 83.1832 21H79.1132Z" fill="#002E3B"/>
+        <path d="M98 27.7579V30H97V0H98V2.24214C98 4.54515 99.0175 6.76699 100.613 8.41055C102.248 10.0947 103 12.4992 103 14.9442V15.0457C103 17.5008 102.248 19.8952 100.602 21.5894C99.0175 23.233 98 25.4549 98 27.7579Z" fill="#A386BC"/>
+    </svg>
+
+    <div id="historyContainer">
+        <p>No names generated yet.</p>
+    </div>
+
+    <button class="delete-all-btn" onclick="clearHistory()">
+        Clear All History
+    </button>
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+</div>
+
+<script>
+
+const liveDateInput = document.getElementById("liveDate");
+
+liveDateInput.addEventListener("change", () => {
+    document.getElementById("weekNumber").value =
+        getISOWeekNumber(liveDateInput.value);
+});
+
+// Calculates the week number based on the date input selctor
+function getISOWeekNumber(dateString) {
+
+    const date = new Date(dateString);
+
+    const target = new Date(
+        Date.UTC(
+            date.getFullYear(),
+            date.getMonth(),
+            date.getDate()
+        )
+    );
+
+    const dayNum = target.getUTCDay() || 7;
+
+    target.setUTCDate(
+        target.getUTCDate() + 4 - dayNum
+    );
+
+    const yearStart = new Date(
+        Date.UTC(target.getUTCFullYear(), 0, 1)
+    );
+
+    return Math.ceil(
+        (((target - yearStart) / 86400000) + 1) / 7
+    );
+}
+
+// Replaces values or spaces with "_" for no user input formatting
+function cleanText(value) {
+
+    return value
+        .trim()
+        .replace(/[^\w\s]/g, "_")
+        .replace(/\s+/g, "_")
+        .replace(/_+/g, "_")
+        .replace(/^_|_$/g, "");
+}
+
+// Gets the date slection and converts from browser format to the format we use "DDMMYY"
+function formatDate(dateValue) {
+
+    const date = new Date(dateValue);
+
+    const year =
+        String(date.getFullYear()).slice(-2);
+
+    const month =
+        String(date.getMonth() + 1)
+            .padStart(2, "0");
+
+    const day =
+        String(date.getDate())
+            .padStart(2, "0");
+
+    return `${year}${month}${day}`;
+}
+
+// Generates the string of user inputted info
+function generateName() {
+
+    const liveDateRaw =
+        document.getElementById("liveDate").value;
+
+    const team =
+        cleanText(
+            document.getElementById("team").value
+        );
+
+    const component =
+        cleanText(
+            document.getElementById("componentType").value
+        );
+
+    const campaign =
+        cleanText(
+            document.getElementById("campaignName").value
+        );
+
+    const week =
+        document.getElementById("weekNumber")
+            .value
+            .trim();
+
+    const booking =
+        cleanText(
+            document.getElementById("bookingId").value
+        );
+
+    const error =
+        document.getElementById("error");
+
+    const success =
+        document.getElementById("success");
+
+    error.textContent = "";
+    success.textContent = "";
+
+    if (
+        !liveDateRaw ||
+        !team ||
+        !component ||
+        !campaign ||
+        !week ||
+        !booking
+    ) {
+        error.textContent =
+            "All fields must be completed.";
+        return;
+    }
+
+    const formattedDate =
+        formatDate(liveDateRaw);
+
+    const output =
+        `${formattedDate}_${team}_${component}_${campaign}_W${week}_${booking}`;
+
+    document.getElementById("output").value =
+        output;
+
+    saveToHistory(output);
+
+    success.textContent =
+        "Naming convention generated successfully.";
+}
+
+// Copies the generated string to the user clipboard
+function copyToClipboard() {
+
+    const text =
+        document.getElementById("output").value;
+
+    if (!text) return;
+
+    navigator.clipboard.writeText(text);
+
+    document.getElementById("success").textContent =
+        "Copied to clipboard.";
+}
+
+// Stores any generated strings to the users local storage
+function saveToHistory(name) {
+
+    let history =
+        JSON.parse(
+            localStorage.getItem("nameHistory")
+        ) || [];
+
+    history =
+        history.filter(
+            item => item.name !== name
+        );
+
+    history.unshift({
+    id: crypto.randomUUID(),
+    name: name,
+    timestamp: new Date().toLocaleString("en-GB")
+    });
+
+    history = history.slice(0, 20);
+
+    localStorage.setItem(
+        "nameHistory",
+        JSON.stringify(history)
+    );
+
+    renderHistory();
+}
+
+// Displays the history of past generations on the page
+function renderHistory() {
+
+    const container =
+        document.getElementById(
+            "historyContainer"
+        );
+
+    const history =
+        JSON.parse(
+            localStorage.getItem(
+                "nameHistory"
+            )
+        ) || [];
+
+    if (!history.length) {
+
+        container.innerHTML =
+            "<p>No names generated yet.</p>";
+
+        return;
+    }
+
+    container.innerHTML =
+        history.map(item => `
+            <div class="history-item">
+
+                <div class="history-date">
+                    ${item.timestamp}
+                </div>
+
+                <div class="history-row">
+
+                    <input
+                        type="text"
+                        readonly
+                        value="${item.name}"
+                    >
+
+                    <button
+                        class="copy-btn-history" onclick="copyHistoryItem('${item.name}')"
+                    >
+                        Copy
+                    </button>
+
+                    <button
+                            class="delete-btn"
+                            onclick="deleteHistoryItem('${item.id}')"
+                        >
+                            Delete
+                    </button>
+
+                </div>
+
+            </div>
+        `).join("");
+}
+
+// Copies generated strings from the user to clipboard
+function copyHistoryItem(text) {
+
+    navigator.clipboard.writeText(text);
+
+    document.getElementById("success").textContent =
+        "Copied from history.";
+}
+
+function deleteHistoryItem(id) {
+
+    let history =
+        JSON.parse(
+            localStorage.getItem("nameHistory")
+        ) || [];
+
+    history =
+        history.filter(
+            item => item.id !== id
+        );
+
+    localStorage.setItem(
+        "nameHistory",
+        JSON.stringify(history)
+    );
+
+    renderHistory();
+
+    document.getElementById("success").textContent =
+        "History item deleted.";
+}
+
+// Deletes every item in local history storge
+function clearHistory() {
+
+    localStorage.removeItem(
+        "nameHistory"
+    );
+
+    renderHistory();
+
+    document.getElementById("success").textContent =
+        "History cleared.";
+}
+
+[
+    "campaignName",
+    "bookingId"
+].forEach(id => {
+
+    document
+        .getElementById(id)
+        .addEventListener(
+            "input",
+            function () {
+
+                this.value =
+                    this.value
+                        .replace(/[^\w\s]/g, "_")
+                        .replace(/\s+/g, "_")
+                        .replace(/_+/g, "_");
+
+            }
+        );
+
+});
+
+renderHistory();
+
+</script>
+
+</body>
+</html>
