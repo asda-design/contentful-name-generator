@@ -182,6 +182,10 @@ input,select, textarea {
     right: -10px;
 }
 
+#liveDate, #team {
+    cursor: pointer;
+}
+
 .page-title-header {
     display: block;
     margin: 0 auto;
@@ -211,6 +215,96 @@ input,select, textarea {
     animation-delay: .300s;
 }
 
+.how-to-title {
+    position: absolute;
+    z-index: 1;
+    transform: rotate(-2deg);
+    top: -40px;
+    left: 40px;
+    animation: pop-in-bounce-how-to 0.5s ease-out;
+    animation-delay: .400s;
+}
+
+.component-wrapper {
+    position: relative;
+}
+
+.component-wrapper::after, .select-wrapper::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 6px;
+    height: 6px;
+    border-right: 2px solid #000;
+    border-bottom: 2px solid #000;
+    transform: translateY(-70%) rotate(45deg);
+    pointer-events: none;
+    right: 12px;
+}
+
+.component-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+
+    max-height: 250px;
+    overflow-y: auto;
+
+    background: white;
+    border-radius: 6px;
+
+    font-size: 14px;
+
+    z-index: 100;
+
+    display: none;
+
+    box-shadow: 0 5px 15px rgba(0,0,0,.15);
+}
+
+.component-option {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.component-option:hover {
+    background: #CCE8DC;
+}
+
+.clear-field-btn:hover {
+    color: #E0004D;
+}
+
+.clear-field-btn {
+    position: absolute;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: none;
+    line-height: 1;
+    color: #666;
+    cursor: pointer;
+    display: none;
+    padding: 0;
+    margin: 0;
+}
+
+.clear-field-btn:hover {
+    color: #E0004D;
+}
+
+.clear-form-btn {
+    background: none;
+    border: 3px solid #002E3B;
+    color: #002E3B;
+    font-weight: bold;
+    border-radius: 6px;
+    margin-left: 10px;
+    padding: 7px 16px;
+}
+
 .page-header {
     margin-bottom: 40px;
 }
@@ -225,19 +319,6 @@ select {
 
 .select-wrapper {
     position: relative;
-}
-
-.select-wrapper::after {
-    content: "";
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    width: 6px;
-    height: 6px;
-    border-right: 3px solid #000;
-    border-bottom: 3px solid #000;
-    transform: translateY(-70%) rotate(45deg);
-    pointer-events: none;
 }
 
 @keyframes pop-in-bounce-title {
@@ -256,6 +337,12 @@ select {
   0%   { opacity: 0; transform: rotate(4deg) scale(0.1); }
   60%  { opacity: 1; transform: rotate(4deg) scale(1.1); }
   100% { transform: rotate(4deg) scale(1); }
+}
+
+@keyframes pop-in-bounce-how-to {
+  0%   { opacity: 0; transform: rotate(-2deg) scale(0.1); }
+  60%  { opacity: 1; transform: rotate(-2deg) scale(1.1); }
+  100% { transform: rotate(-2deg) scale(1); }
 }
 
 </style>
@@ -300,119 +387,44 @@ select {
     <div class="form-group">
         <label>Component Type</label>
 
-        <input
-            list="componentList"
-            id="componentType"
-            placeholder="Search component type..."
-        >
+        <div class="component-wrapper">
 
-        <datalist id="componentList">
-            <option value="Ad Banner : Cart : Horizontal">
-            <option value="Ad Banner : Category : Horizontal">
-            <option value="Ad Banner : Favorites : Horizontal">
-            <option value="Ad Banner : Logged-in Home : Horizontal Hero">
-            <option value="Ad Banner : Logged-out Home : Horizontal Hero">
-            <option value="Ad Banner : Order Confirmation : Horizontal">
-            <option value="Ad Banner : Product Details : Horizontal">
-            <option value="Ad Banner : Promotion Details : Horizontal">
-            <option value="Ad Banner : Promotions : Horizontal">
-            <option value="Ad Banner : Search Results : Horizontal">
-            <option value="Ad Banner : Slot booking : Horizontal">
-            <option value="Ad Banner : Category : Double Tile">
-            <option value="Ad Banner : Logged-in Home : Double Tile">
-            <option value="Ad Banner : Favorites : Double Tile">
-            <option value="Ad Banner : Logged-out Home : Double Tile">
-            <option value="Ad Banner : Promotions : Double Tile">
-            <option value="Ad Banner : Search Results : Double Tile">
-            <option value="Ad Banner : Logged-in Homepage : Product Card">
-            <option value="Ad Banner : Logged-out Homepage : Product Card">
-            <option value="Ad Banner : Category Page : Product Card">
-            <option value="Ad Banner : Search Results : Product Card">
-            <option value="Logged In Homepage : Componentized">
-            <option value="Logged Out Homepage : Componentized">
-            <option value="Component : Carousel : Container">
-            <option value="Component : Product Feed">
-            <option value="Popup">
-            <option value="Tabs : Menu">
-            <option value="Tabs : Single Tab">
-            <option value="Footer">
-            <option value="Footer Links Column">
-            <option value="Footer Page Link">
-            <option value="Footer Social Link">
-            <option value="Content Block : Header">
-            <option value="Content Block : In page">
-            <option value="Navigation : Mobile links">
-            <option value="Category : SEO Content Field">
-            <option value="Shoppable Banner: Category Page">
-            <option value="Shoppable Banner: Search Page">
-            <option value="Featured Products : Category Page">
-            <option value="Featured Products : Logged-in Homepage">
-            <option value="Featured Products : Logged-out Homepage">
-            <option value="Featured Products : Product Details">
-            <option value="Featured Products : Promotions Page">
-            <option value="Featured Products : Search Results">
-            <option value="Menu Campaign">
-            <option value="Menu Campaign Group">
-            <option value="Menu Campaign Item">
-            <option value="Checkout Walk : Configuration">
-            <option value="Checkout Walk : Customer Target : All">
-            <option value="Checkout Walk : Customer Target : IDs">
-            <option value="Checkout Walk : Customer Target : Percentage">
-            <option value="Checkout Walk : Free gifts page">
-            <option value="Checkout Walk : Page">
-            <option value="Checkout Walk : Product list">
-            <option value="Checkout Walk : Section">
-            <option value="Delivery Pass : Horizontal hero">
-            <option value="Delivery Pass : Subscriptions page">
-            <option value="Composable : Navbar">
-            <option value="Composable : Navbar : Item Custom">
-            <option value="Composable : Navbar : Item Default">
-            <option value="Shop In Shop : Componentized">
-            <option value="Shop In Shop Category : Componentized">
-            <option value="Static Page">
-            <option value="Static Page : Componentized">
-            <option value="Component : Rich Text">
-            <option value="Component : Horizontal Hero">
-            <option value="Component : Grid : Container">
-            <option value="Component : Grid : Lead Image">
-            <option value="Component : Grid : Tile">
-            <option value="Component : Navigation Bar">
-            <option value="Component : Navigation Bar : Item">
-            <option value="Recipes : Category : Product Card">
-            <option value="Recipes : Search Results : Product Card">
-            <option value="Recipes : Store Home Page Card">
-            <option value="Recipes : Store Home Page Container">
-            <option value="Recipes : Recipe Group">
-            <option value="Recipes : Collection Group">
-            <option value="Recipes : Expanded Collection">
-            <option value="Recipes : Author">
-            <option value="Recipes : Collection Details">
-            <option value="Recipes : Home Page">
-            <option value="Recipes : Recipe Details">
-            <option value="Recipes : Saved Recipes">
-            <option value="Recipes : SEO Settings">
-            <option value="Recipes : Structured Data Category">
-            <option value="Recipes : Unit Of Measurement">
-            <option value="Module : In Grid">
-            <option value="Component : Product List">
-            <option value="Component : Tile">
-            <option value="Seasonal Slots : Slot Booking : Above Grid">
-        </datalist>
+            <input
+                type="text"
+                id="componentType"
+                placeholder="Search component type..."
+                autocomplete="off"
+            >
+
+            <button
+                type="button"
+                id="clearComponentType"
+                class="clear-field-btn"
+                aria-label="Clear">
+                Clear
+            </button>
+
+            <div
+                id="componentDropdown"
+                class="component-dropdown">
+            </div>
+
+        </div>
     </div>
 
     <div class="form-group">
         <label>Name / Event / Campaign</label>
-        <input type="text" id="campaignName" placeholder="Easter">
+        <input type="text" id="campaignName" placeholder="e.g. Easter">
     </div>
 
     <div class="form-group">
         <label>Week Number</label>
-        <input type="number" id="weekNumber">
+        <input type="number" id="weekNumber" placeholder="Calculated by date selection">
     </div>
 
     <div class="form-group">
-        <label>Description / Placement / BM Nunber</label>
-        <input type="text" id="bookingId" placeholder="Add extra details here if required">
+        <label>Description / Placement / BM Number</label>
+        <input type="text" id="bookingId" placeholder="Add extra details here">
     </div>
 
     <div class="actions">
@@ -424,12 +436,17 @@ select {
 
     <div class="form-group">
         <label>Generated Name</label>
-        <textarea id="output" readonly></textarea>
+        <textarea id="output" placeholder="Generated name will display here" readonly></textarea>
     </div>
 
     <button class="copy-btn" onclick="copyToClipboard()">
         Copy to Clipboard
     </button>
+
+    <button class="clear-form-btn" onclick="clearForm()">
+        Clear All Fields
+    </button>
+
     <div class="corner corner-tl"></div>
     <div class="corner corner-tr"></div>
     <div class="corner corner-bl"></div>
@@ -452,6 +469,30 @@ select {
     <button class="delete-all-btn" onclick="clearHistory()">
         Clear All History
     </button>
+    <p>Only you can see this history. Changes you make here are only for you and won't impact the generator for others.</p>
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+</div>
+
+<div class="scalloped-border">
+    <svg class="how-to-title" width="330" height="64" viewBox="0 0 164 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 15L7.5 0H8L8 30H7.5L0 15Z" fill="#F9E547"/>
+        <rect width="148" height="30" transform="translate(8)" fill="#F9E547"/>
+        <path d="M24.6824 21.5V16.4125H20.8344V21.5H17.1344V8.55H20.8344V13.2675H24.6824V8.55H28.3824V21.5H24.6824ZM35.8046 21.796C31.8456 21.796 29.6441 19.132 29.6441 15.025C29.6441 10.918 31.8456 8.254 35.8046 8.254C39.7636 8.254 41.9651 10.918 41.9651 15.025C41.9651 19.132 39.7636 21.796 35.8046 21.796ZM33.4551 15.025C33.4551 17.4855 34.3431 18.725 35.8046 18.725C37.2661 18.725 38.1541 17.4855 38.1541 15.025C38.1541 12.5645 37.2661 11.325 35.8046 11.325C34.3431 11.325 33.4551 12.5645 33.4551 15.025ZM45.266 21.5L42.121 8.55H46.117L47.634 16.653L49.0585 8.698H52.7585L54.183 16.653L55.7 8.55H59.696L56.551 21.5H52.481L50.9085 14.211L49.336 21.5H45.266ZM64.36 21.5V8.55H68.06V21.5H64.36ZM72.1484 21.5V11.51H69.1884V8.55H78.7899V11.51H75.8484V21.5H72.1484ZM86.0238 21.5L82.8788 8.55H86.8748L88.3918 16.653L89.8163 8.698H93.5163L94.9408 16.653L96.4578 8.55H100.454L97.3088 21.5H93.2388L91.6663 14.211L90.0938 21.5H86.0238ZM106.769 21.796C102.81 21.796 100.609 19.132 100.609 15.025C100.609 10.918 102.81 8.254 106.769 8.254C110.728 8.254 112.93 10.918 112.93 15.025C112.93 19.132 110.728 21.796 106.769 21.796ZM104.42 15.025C104.42 17.4855 105.308 18.725 106.769 18.725C108.231 18.725 109.119 17.4855 109.119 15.025C109.119 12.5645 108.231 11.325 106.769 11.325C105.308 11.325 104.42 12.5645 104.42 15.025ZM114.187 8.994C115.871 8.476 117.425 8.254 119.034 8.254C122.383 8.254 124.492 9.9745 124.492 12.731C124.492 14.2665 123.863 15.469 122.771 16.2275C123.918 17.615 124.732 19.465 125.065 21.5H121.254C120.94 19.983 120.329 18.2995 119.497 17.097H117.887V21.5H114.187V8.994ZM117.887 14.322H119.016C120.015 14.322 120.681 13.6745 120.681 12.731C120.681 11.658 120.163 11.214 119.127 11.214C118.72 11.214 118.276 11.2695 117.887 11.436V14.322ZM125.533 21.5V8.55H129.233V13.471L132.063 8.5315H136.429L132.341 14.7475C133.876 15.8575 135.782 18.7065 136.244 21.5H132.248C131.619 19.132 130.269 17.245 129.233 16.505V21.5H125.533ZM142.086 21.796C139.496 21.796 137.628 20.5195 136.684 18.1145L139.94 16.912C140.292 18.0775 141.106 18.725 142.216 18.725C142.993 18.725 143.474 18.3365 143.474 17.7445C143.474 17.097 143.048 16.8565 140.939 16.3385L140.421 16.209C138.497 15.728 137.276 14.2665 137.276 12.472C137.276 9.8635 139.163 8.254 142.197 8.254C145.009 8.254 146.73 9.586 147.229 11.9725L143.733 12.842C143.492 11.7135 143.011 11.325 142.234 11.325C141.531 11.325 141.05 11.7135 141.05 12.287C141.05 12.8605 141.494 13.1935 142.493 13.3785L142.9 13.4525C145.879 13.989 147.248 15.284 147.248 17.541C147.248 20.1495 145.25 21.796 142.086 21.796Z" fill="#002E3B"/>
+        <path d="M164 15L156.5 30H156V0H156.5L164 15Z" fill="#F9E547"/>
+    </svg>
+
+    <p><strong>Live Date&nbsp;</strong>- Enter the&nbsp;date your content goes live.&nbsp;</p>
+    <p><strong>Team Name&nbsp;</strong>- Select your team from the dropdown.</p>
+    <p><strong>Component Type&nbsp;</strong>- Select the component you're creating in contentful. If creating media select the component type it's going to be used for.</p>
+    <p><strong>Name / Event / Campaign&nbsp;</strong>- This is used to help you identify content within your team so we recommend using a system that works for you.&nbsp;<em>Please note spaces will be converted to underscores.</em></p>
+    <p><strong>Week Number</strong>&nbsp;- This will be automatically populated by the Live Date you select. You can manually change it if needed.</p>
+    <p><strong>Description / Placement / BM Number&nbsp;</strong>- This is used to help you identify content within your team so we recommend using a system that works for you.&nbsp;<em>Please note spaces will be converted to underscores.</em></p>
+    <p><em>Please contatct the digital campaigns team (<span data-teams="true"><a id="menurj1a" class="fui-Link ___1q1shib f2hkw1w f3rmtva f1ewtqcl fyind8e f1k6fduh f1w7gpdv fk6fouc fjoy568 figsok6 f1s184ao f1mk8lai fnbmjn9 f1o700av f13mvf36 f1cmlufx f9n3di6 f1ids18y f1tx3yz7 f1deo86v f1eh06m1 f1iescvh fhgqx19 f1olyrje f1p93eir f1nev41a f1h8hb77 f1lqvz6u f10aw75t fsle3fq f17ae5zn" title="mailto:digitalcampaignsteam@asda.uk" href="mailto:digitalcampaignsteam@asda.uk" target="_blank" rel="noreferrer noopener">digitalcampaignsteam@asda.uk</a></span>) if you have any questions about the generator.</em></p>
+
+
     <div class="corner corner-tl"></div>
     <div class="corner corner-tr"></div>
     <div class="corner corner-bl"></div>
@@ -495,6 +536,14 @@ function getISOWeekNumber(dateString) {
     );
 }
 
+const liveDate = document.getElementById("liveDate");
+
+liveDate.addEventListener("click", () => {
+    if (liveDate.showPicker) {
+        liveDate.showPicker();
+    }
+});
+
 // Replaces values or spaces with "_" for no user input formatting
 function cleanText(value) {
 
@@ -506,7 +555,7 @@ function cleanText(value) {
         .replace(/^_|_$/g, "");
 }
 
-// Gets the date slection and converts from browser format to the format we use "DDMMYY"
+// Gets the date slection and converts from browser format to the format we use "YYMMDD"
 function formatDate(dateValue) {
 
     const date = new Date(dateValue);
@@ -574,7 +623,7 @@ function generateName() {
         !booking
     ) {
         error.textContent =
-            "All fields must be completed.";
+            "All fields must be completed to generate a name.";
         return;
     }
 
@@ -585,13 +634,238 @@ function generateName() {
         `${formattedDate}_${team}_${component}_${campaign}_W${week}_${booking}`;
 
     document.getElementById("output").value =
-        output;
+    output;
+
+    document.getElementById("output").select();
+
+    navigator.clipboard.writeText(output);
 
     saveToHistory(output);
 
     success.textContent =
-        "Naming convention generated successfully.";
+        "Naming convention generated and copied to clipboard.";
 }
+
+const componentOptions = [
+    "Ad Banner : Cart : Horizontal",
+    "Ad Banner : Category : Horizontal",
+    "Ad Banner : Favorites : Horizontal",
+    "Ad Banner : Logged-in Home : Horizontal Hero",
+    "Ad Banner : Logged-out Home : Horizontal Hero",
+    "Ad Banner : Order Confirmation : Horizontal",
+    "Ad Banner : Product Details : Horizontal",
+    "Ad Banner : Promotion Details : Horizontal",
+    "Ad Banner : Promotions : Horizontal",
+    "Ad Banner : Search Results : Horizontal",
+    "Ad Banner : Slot booking : Horizontal",
+    "Ad Banner : Category : Double Tile",
+    "Ad Banner : Logged-in Home : Double Tile",
+    "Ad Banner : Favorites : Double Tile",
+    "Ad Banner : Logged-out Home : Double Tile",
+    "Ad Banner : Promotions : Double Tile",
+    "Ad Banner : Search Results : Double Tile",
+    "Ad Banner : Logged-in Homepage : Product Card",
+    "Ad Banner : Logged-out Homepage : Product Card",
+    "Ad Banner : Category Page : Product Card",
+    "Ad Banner : Search Results : Product Card",
+    "Logged In Homepage : Componentized",
+    "Logged Out Homepage : Componentized",
+    "Component : Carousel : Container",
+    "Component : Product Feed",
+    "Popup",
+    "Tabs : Menu",
+    "Tabs : Single Tab",
+    "Footer",
+    "Footer Links Column",
+    "Footer Page Link",
+    "Footer Social Link",
+    "Content Block : Header",
+    "Content Block : In page",
+    "Navigation : Mobile links",
+    "Category : SEO Content Field",
+    "Shoppable Banner: Category Page",
+    "Shoppable Banner: Search Page",
+    "Featured Products : Category Page",
+    "Featured Products : Logged-in Homepage",
+    "Featured Products : Logged-out Homepage",
+    "Featured Products : Product Details",
+    "Featured Products : Promotions Page",
+    "Featured Products : Search Results",
+    "Menu Campaign",
+    "Menu Campaign Group",
+    "Menu Campaign Item",
+    "Checkout Walk : Configuration",
+    "Checkout Walk : Customer Target : All",
+    "Checkout Walk : Customer Target : IDs",
+    "Checkout Walk : Customer Target : Percentage",
+    "Checkout Walk : Free gifts page",
+    "Checkout Walk : Page",
+    "Checkout Walk : Product list",
+    "Checkout Walk : Section",
+    "Delivery Pass : Horizontal hero",
+    "Delivery Pass : Subscriptions page",
+    "Composable : Navbar",
+    "Composable : Navbar : Item Custom",
+    "Composable : Navbar : Item Default",
+    "Shop In Shop : Componentized",
+    "Shop In Shop Category : Componentized",
+    "Static Page",
+    "Static Page : Componentized",
+    "Component : Rich Text",
+    "Component : Horizontal Hero",
+    "Component : Grid : Container",
+    "Component : Grid : Lead Image",
+    "Component : Grid : Tile",
+    "Component : Navigation Bar",
+    "Component : Navigation Bar : Item",
+    "Recipes : Category : Product Card",
+    "Recipes : Search Results : Product Card",
+    "Recipes : Store Home Page Card",
+    "Recipes : Store Home Page Container",
+    "Recipes : Recipe Group",
+    "Recipes : Collection Group",
+    "Recipes : Expanded Collection",
+    "Recipes : Author",
+    "Recipes : Collection Details",
+    "Recipes : Home Page",
+    "Recipes : Recipe Details",
+    "Recipes : Saved Recipes",
+    "Recipes : SEO Settings",
+    "Recipes : Structured Data Category",
+    "Recipes : Unit Of Measurement",
+    "Module : In Grid",
+    "Component : Product List",
+    "Component : Tile",
+    "Seasonal Slots : Slot Booking : Above Grid"
+];
+
+
+const componentTypeInput =
+    document.getElementById("componentType");
+
+const clearComponentTypeBtn =
+    document.getElementById("clearComponentType");
+
+componentTypeInput.addEventListener("input", () => {
+
+    clearComponentTypeBtn.style.display =
+        componentTypeInput.value.length > 0
+            ? "block"
+            : "none";
+
+});
+
+const componentDropdown =
+    document.getElementById("componentDropdown");
+
+function renderComponentList(search = "") {
+
+    const filtered =
+        componentOptions.filter(option =>
+            option
+                .toLowerCase()
+                .includes(
+                    search.toLowerCase()
+                )
+        );
+
+    componentDropdown.innerHTML =
+        filtered
+            .map(option => `
+                <div
+                    class="component-option"
+                    data-value="${option}">
+                    ${option}
+                </div>
+            `)
+            .join("");
+
+    componentDropdown.style.display =
+        filtered.length
+            ? "block"
+            : "none";
+}
+
+componentTypeInput.addEventListener(
+    "focus",
+    () => {
+        renderComponentList(
+            componentTypeInput.value
+        );
+    }
+);
+
+componentTypeInput.addEventListener(
+    "input",
+    () => {
+
+        renderComponentList(
+            componentTypeInput.value
+        );
+
+        clearComponentTypeBtn.style.display =
+            componentTypeInput.value
+                ? "block"
+                : "none";
+
+    }
+);
+
+componentDropdown.addEventListener(
+    "click",
+    event => {
+
+        const option =
+            event.target.closest(
+                ".component-option"
+            );
+
+        if (!option) return;
+
+        componentTypeInput.value =
+            option.dataset.value;
+
+        componentDropdown.style.display =
+            "none";
+
+        clearComponentTypeBtn.style.display =
+            "block";
+
+    }
+);
+
+document.addEventListener(
+    "click",
+    event => {
+
+        if (
+            !event.target.closest(
+                ".component-wrapper"
+            )
+        ) {
+            componentDropdown.style.display =
+                "none";
+        }
+
+    }
+);
+
+clearComponentTypeBtn.addEventListener(
+    "click",
+    () => {
+
+        componentTypeInput.value = "";
+
+        componentDropdown.style.display =
+            "none";
+
+        clearComponentTypeBtn.style.display =
+            "none";
+
+        componentTypeInput.focus();
+
+    }
+);
 
 // Copies the generated string to the user clipboard
 function copyToClipboard() {
@@ -760,6 +1034,23 @@ function clearHistory() {
         );
 
 });
+
+function clearForm() {
+
+    document.getElementById("liveDate").value = "";
+    document.getElementById("team").value = "";
+    document.getElementById("componentType").value = "";
+    document.getElementById("campaignName").value = "";
+    document.getElementById("weekNumber").value = "";
+    document.getElementById("bookingId").value = "";
+    document.getElementById("output").value = "";
+
+    document.getElementById("error").textContent = "";
+    document.getElementById("success").textContent = "";
+
+    clearComponentTypeBtn.style.display = "none";
+
+}
 
 renderHistory();
 
